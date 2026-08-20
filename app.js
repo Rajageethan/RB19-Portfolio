@@ -2,16 +2,19 @@
  * RAJAGEETHAN A // APPLE ULTRA-MINIMALIST F1 PORTFOLIO ENGINE
  * Trajectory-aware forward magnetic snapping, 60fps/120fps frame easing,
  * and edge-to-edge 360° F1 canvas renderer.
+ *
+ * PERFORMANCE: WebP frames + 3-wave progressive loading for instant first paint.
  */
 
 (function () {
   'use strict';
 
   // --- Configuration ---
-  const TOTAL_FRAMES = 161; // 0000.png to 0160.png
+  const TOTAL_FRAMES = 161; // 0000.webp to 0160.webp
   const FOLDER_PATH = 'Blender/';
+  const FRAME_EXT = '.webp';
   const KEYFRAMES = [0, 30, 60, 90, 120, 150];
-  
+
   // Physics Parameters
   const FRICTION = 0.88;               // Inertia velocity decay rate
   const VELOCITY_SENSITIVITY = 0.0028; // Wheel input multiplier
@@ -26,8 +29,9 @@
   const sections = document.querySelectorAll('.keyframe-section');
 
   // --- State Variables ---
-  const images = [];
+  const images = new Array(TOTAL_FRAMES).fill(null);
   let loadedCount = 0;
+  let wave2Ready = false;
 
   let currentFrame = 0;
   let targetFrame = 0;
@@ -36,32 +40,87 @@
   let touchStartY = 0;
   let bgGradient = null;
 
-  // --- 1. Preload & GPU Texture Decode ---
-  function preloadFrames() {
-    for (let i = 0; i < TOTAL_FRAMES; i++) {
-      const img = new Image();
-      const frameNum = String(i).padStart(4, '0');
-      img.src = `${FOLDER_PATH}${frameNum}.png`;
+  // --- Loading Overlay ---
+  const overlay = document.getElementById('loading-overlay');
+  const progressBar = document.getElementById('loading-progress-bar');
+  const progressLabel = document.getElementById('loading-label');
 
-      const handleImageReady = () => {
+  function updateLoadingUI(loaded, total) {
+    const pct = Math.round((loaded / total) * 100);
+    if (progressBar) progressBar.style.width = pct + '%';
+    if (progressLabel) progressLabel.textContent = pct + '%';
+  }
+
+  function hideOverlay() {
+    if (overlay) {
+      overlay.classList.add('hidden');
+      // Remove from DOM after transition ends
+      overlay.addEventListener('transitionend', () => overlay.remove(), { once: true });
+    }
+  }
+
+  // --- Frame Src Helper ---
+  function frameSrc(index) {
+    return `${FOLDER_PATH}${String(index).padStart(4, '0')}${FRAME_EXT}`;
+  }
+
+  // --- Load a Single Frame Promise ---
+  function loadFrame(index) {
+    return new Promise((resolve) => {
+      if (images[index] && images[index].complete && images[index].naturalWidth > 0) {
+        resolve(index);
+        return;
+      }
+      const img = new Image();
+      img.src = frameSrc(index);
+
+      const done = () => {
+        images[index] = img;
         loadedCount++;
-        if (i === 0) renderCurrentFrame();
+        updateLoadingUI(loadedCount, TOTAL_FRAMES);
+        resolve(index);
       };
 
       img.onload = () => {
         if ('decode' in img) {
-          img.decode().then(handleImageReady).catch(handleImageReady);
+          img.decode().then(done).catch(done);
         } else {
-          handleImageReady();
+          done();
         }
       };
-
       img.onerror = () => {
-        console.error(`Failed to load frame ${frameNum}`);
-        handleImageReady();
+        console.error(`Failed to load frame ${index}`);
+        images[index] = null;
+        loadedCount++;
+        updateLoadingUI(loadedCount, TOTAL_FRAMES);
+        resolve(index);
       };
+    });
+  }
 
-      images.push(img);
+  // --- 1. Three-Wave Progressive Preload ---
+  async function preloadFrames() {
+    // WAVE 1: Frame 0 only — instant first paint
+    await loadFrame(0);
+    renderCurrentFrame();
+
+    // WAVE 2: All keyframes — enables navigation immediately
+    const keyframeLoads = KEYFRAMES.map((kf) => loadFrame(kf));
+    await Promise.all(keyframeLoads);
+    wave2Ready = true;
+    hideOverlay(); // Hide loading screen — site is interactive
+
+    // WAVE 3: All remaining frames in background (batched to avoid network saturation)
+    const remaining = [];
+    for (let i = 0; i < TOTAL_FRAMES; i++) {
+      if (!KEYFRAMES.includes(i)) remaining.push(i);
+    }
+
+    // Load in batches of 10 to avoid hammering the network
+    const BATCH_SIZE = 10;
+    for (let b = 0; b < remaining.length; b += BATCH_SIZE) {
+      const batch = remaining.slice(b, b + BATCH_SIZE).map((i) => loadFrame(i));
+      await Promise.all(batch);
     }
   }
 
@@ -86,8 +145,6 @@
   }
 
   function renderCurrentFrame() {
-    if (!images.length) return;
-
     // Clamp current frame strictly within [0, 160]
     const index = Math.max(0, Math.min(160, Math.round(currentFrame)));
     const img = images[index];
@@ -101,7 +158,7 @@
     const vAspect = vWidth / vHeight;
 
     let drawW, drawH;
-    const margin = 1.0; 
+    const margin = 1.0;
 
     if (vAspect > imgAspect) {
       drawW = vWidth * margin;
