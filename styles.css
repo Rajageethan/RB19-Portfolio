@@ -1,0 +1,606 @@
+/* ==========================================================================
+   RAJAGEETHAN A // APPLE ULTRA-MINIMALIST F1 PORTFOLIO
+   Spacious typography. Zero container boxes. Zero emojis. Zero bubble shapes.
+   ========================================================================== */
+
+:root {
+  --bg-dark: #080808;
+  
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1a6;
+  --text-tertiary: #55555a;
+  
+  --accent-red: #E10600;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Space Mono', SFMono-Regular, monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+}
+
+/* ==========================================================================
+   Full Viewport Canvas
+   ========================================================================== */
+
+#f1-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  z-index: 1;
+  background-color: var(--bg-dark);
+}
+
+/* ==========================================================================
+   Top Header Navigation
+   ========================================================================== */
+
+#top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 64px;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 48px;
+  background: transparent;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-name {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.brand-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-secondary);
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  padding-left: 12px;
+  border-left: 1px solid var(--border-subtle);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.brand-subtle {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent-red);
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.nav-links {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 8px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: color 0.2s ease;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.nav-item span {
+  color: var(--text-tertiary);
+  margin-right: 4px;
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.nav-item.active span {
+  color: var(--accent-red);
+}
+
+/* ==========================================================================
+   Content Sections Overlay (Pure Floating Typography)
+   ========================================================================== */
+
+#content-container {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.keyframe-section {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.keyframe-section.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Position Alignments */
+
+/* Keyframe 0 (Hero): Top-Left Floating */
+.keyframe-section.pos-hero {
+  padding: 110px 0 0 90px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Keyframe 30 (Profile): Top-Left Floating */
+.keyframe-section.pos-profile {
+  padding: 110px 0 0 90px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Keyframe 60 (Projects): Positioned Below the Car (Bottom Centered) */
+.keyframe-section.pos-projects {
+  padding: 0 80px 44px 80px;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Keyframe 90 (Telemetry): Top-Left Floating */
+.keyframe-section.pos-telemetry {
+  padding: 110px 0 0 90px;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Keyframe 120 (Experience): Top Spread Floating Above Roofline */
+.keyframe-section.pos-experience {
+  padding: 90px 80px 0 80px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Keyframe 150 (Contact): Top Right Floating below NAV Bar */
+.keyframe-section.pos-contact {
+  padding: 100px 90px 0 0;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.keyframe-section.pos-contact .floating-text-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+/* Text Container Blocks */
+.floating-text-block {
+  max-width: 460px;
+  width: 100%;
+}
+
+.floating-text-block.wide-top {
+  max-width: 1080px;
+}
+
+.floating-text-block.wide-bottom {
+  max-width: 1120px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   Minimalist Typography Scale
+   ========================================================================== */
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.meta-row.end {
+  justify-content: flex-end;
+}
+
+.meta-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--text-tertiary);
+  font-weight: 700;
+  display: inline-block;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.meta-tag.red {
+  color: var(--accent-red);
+}
+
+.hero-title {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.95);
+}
+
+.section-headline {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.95);
+}
+
+.section-subheading {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent-red);
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  margin-bottom: 14px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.pure-paragraph {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+}
+
+.lead-paragraph {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
+}
+
+/* Action Links */
+.text-actions {
+  display: flex;
+  gap: 20px;
+}
+
+.text-link-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.text-link-btn.primary {
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--text-primary);
+  padding-bottom: 2px;
+}
+
+.text-link-btn:hover {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+}
+
+/* ==========================================================================
+   Section 30: Profile Meta
+   ========================================================================== */
+
+.floating-edu-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 16px;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent-red);
+}
+
+.edu-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.edu-detail {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+/* ==========================================================================
+   Section 60: Projects
+   ========================================================================== */
+
+.floating-projects-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  margin-top: 12px;
+}
+
+.pure-project {
+  display: flex;
+  flex-direction: column;
+}
+
+.proj-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.proj-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.pub-tag {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--accent-red);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.live-link {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 1px solid var(--text-primary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.live-link:hover {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+}
+
+.proj-cat {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-tertiary);
+}
+
+.proj-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+}
+
+.proj-summary {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+}
+
+.proj-stack {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-tertiary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+/* ==========================================================================
+   Section 90: Telemetry Skills
+   ========================================================================== */
+
+.floating-telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+  margin-top: 16px;
+}
+
+.telemetry-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.group-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent-red);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.text-skill-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.text-skill-list li strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+}
+
+/* ==========================================================================
+   Section 120: Experience Timeline
+   ========================================================================== */
+
+.floating-timeline-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.timeline-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.stint-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.company-heading {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+}
+
+.role-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.timeline-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+}
+
+/* ==========================================================================
+   Section 150: Contact Links
+   ========================================================================== */
+
+.contact-links-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.pure-link-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-decoration: none;
+}
+
+.pure-link-item:hover .link-value {
+  color: var(--accent-red);
+}
+
+.link-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.15em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.link-value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: color 0.2s ease;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .keyframe-section {
+    padding: 80px 24px !important;
+  }
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .floating-projects-row,
+  .floating-telemetry-grid,
+  .floating-timeline-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  #top-nav {
+    padding: 0 20px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}

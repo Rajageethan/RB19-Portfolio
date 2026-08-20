@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAJAGEETHAN A // Backend Engineer & LLM Specialist</title>
+  <meta name="description" content="Portfolio of Rajageethan A - Computer Science Graduate specializing in Backend Engineering, RAG Pipelines, and AI Agents.">
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Fullscreen 360° F1 Canvas -->
+  <canvas id="f1-canvas"></canvas>
+
+  <!-- Top Apple Minimalist Header Nav -->
+  <header id="top-nav">
+    <div class="nav-brand">
+      <span class="brand-name">RAJAGEETHAN A</span>
+      <span class="brand-tag">BACKEND & LLM SPECIALIST</span>
+      <span class="brand-subtle">// #33</span>
+    </div>
+    
+    <nav class="nav-links">
+      <button class="nav-item active" data-keyframe="0"><span>00</span> INTRO</button>
+      <button class="nav-item" data-keyframe="30"><span>30</span> ABOUT</button>
+      <button class="nav-item" data-keyframe="60"><span>60</span> PROJECTS</button>
+      <button class="nav-item" data-keyframe="90"><span>90</span> SKILLS</button>
+      <button class="nav-item" data-keyframe="120"><span>120</span> EXPERIENCE</button>
+      <button class="nav-item" data-keyframe="150"><span>150</span> CONTACT</button>
+    </nav>
+  </header>
+
+  <!-- Content Overlay Container -->
+  <main id="content-container">
+
+    <!-- KEYFRAME 0: HERO INTRO -->
+    <section class="keyframe-section active pos-hero" id="sec-0" data-frame="0">
+      <div class="floating-text-block">
+        <div class="meta-row">
+          <span class="meta-tag red">B.TECH CSE 2026</span>
+          <span class="meta-tag">IEEE RESEARCHER</span>
+          <span class="meta-tag red">SIMPLY LOVELY</span>
+        </div>
+        <h1 class="hero-title">RAJAGEETHAN A</h1>
+        <p class="section-subheading">Backend Engineer & LLM Specialist</p>
+        <p class="pure-paragraph">
+          Specializing in production-grade RAG pipelines, autonomous AI agents, and high-performance FastAPI backends built with Python, FastAPI, Django, and vector search.
+        </p>
+        
+        <div class="text-actions">
+          <button class="text-link-btn primary" onclick="window.appJumpTo(60)">VIEW PROJECTS -&gt;</button>
+          <button class="text-link-btn" onclick="window.appJumpTo(150)">CONTACT ME -&gt;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEYFRAME 30: ABOUT ME -->
+    <section class="keyframe-section pos-profile" id="sec-30" data-frame="30">
+      <div class="floating-text-block">
+        <div class="meta-row">
+          <span class="meta-tag red">KEYFRAME 30 // ABOUT</span>
+          <span class="meta-tag">HAHA YES BOYS</span>
+        </div>
+        <h2 class="section-headline">ABOUT ME</h2>
+        
+        <p class="lead-paragraph">
+          Computer Science graduate (B.Tech 2026, CGPA 7.72/10) specializing in robust backend engineering and applied artificial intelligence.
+        </p>
+        <p class="pure-paragraph">
+          Experienced in building ChromaDB RAG pipelines over 3,000+ legal document chunks, stateful LangGraph agents with human-in-the-loop safety controls, and REST APIs.
+        </p>
+
+        <div class="floating-edu-meta">
+          <span class="edu-title">Kalasalingam Academy of Research and Education</span>
+          <span class="edu-detail">B.Tech Computer Science & Engineering • CGPA 7.72 / 10 • Graduated 2026</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEYFRAME 60: FEATURED PROJECTS -->
+    <section class="keyframe-section pos-projects" id="sec-60" data-frame="60">
+      <div class="floating-text-block wide-bottom">
+        <span class="meta-tag red">KEYFRAME 60 // BUILDS</span>
+        <h2 class="section-headline">FEATURED PROJECTS</h2>
+
+        <div class="floating-projects-row">
+          
+          <!-- Project 1: Clegora -->
+          <div class="pure-project">
+            <div class="proj-meta">
+              <span class="proj-num">01</span>
+              <span class="pub-tag">IEEE PUBLISHED</span>
+            </div>
+            <h3 class="proj-title">Clegora – AI Legal Assistant</h3>
+            <p class="proj-summary">
+              RAG pipeline over 3,000+ Indian legal document chunks. Achieved ~50ms vector retrieval in ChromaDB with prompt guardrails.
+            </p>
+            <div class="proj-stack">FastAPI • LangChain • ChromaDB</div>
+          </div>
+
+          <!-- Project 2: Text-to-SQL -->
+          <div class="pure-project">
+            <div class="proj-meta">
+              <span class="proj-num">02</span>
+              <a href="https://langgraph-sql-agent.vercel.app/" target="_blank" rel="noopener" class="live-link">LIVE DEMO -&gt;</a>
+            </div>
+            <h3 class="proj-title">Text-to-SQL Agent (Human-in-Loop)</h3>
+            <p class="proj-summary">
+              LangGraph state machine for safe plain-English PostgreSQL queries with row-level impact previews and automatic transaction rollbacks.
+            </p>
+            <div class="proj-stack">Python • LangGraph • Groq • SQLAlchemy</div>
+          </div>
+
+          <!-- Project 3: Farmer P2P -->
+          <div class="pure-project">
+            <div class="proj-meta">
+              <span class="proj-num">03</span>
+              <span class="proj-cat">E-COMMERCE</span>
+            </div>
+            <h3 class="proj-title">Farmer P2P Marketplace</h3>
+            <p class="proj-summary">
+              Direct peer-to-peer agricultural produce marketplace bypassing intermediaries with normalized MySQL schema and REST APIs.
+            </p>
+            <div class="proj-stack">Django • MySQL • REST APIs</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- KEYFRAME 90: TECHNICAL SKILLS -->
+    <section class="keyframe-section pos-telemetry" id="sec-90" data-frame="90">
+      <div class="floating-text-block">
+        <div class="meta-row">
+          <span class="meta-tag red">KEYFRAME 90 // SKILLS</span>
+          <span class="meta-tag red">SECTOR 1 PURPLE</span>
+        </div>
+        <h2 class="section-headline">TECHNICAL SKILLS</h2>
+
+        <div class="floating-telemetry-grid">
+          
+          <div class="telemetry-group">
+            <span class="group-label">AI & LLM STACK</span>
+            <ul class="text-skill-list">
+              <li><strong>LangChain & LangGraph</strong></li>
+              <li><strong>RAG Pipelines & ChromaDB</strong></li>
+              <li><strong>Embeddings & Vector Search</strong></li>
+              <li><strong>OpenAI SDK & Guardrails</strong></li>
+            </ul>
+          </div>
+
+          <div class="telemetry-group">
+            <span class="group-label">BACKEND FRAMEWORKS</span>
+            <ul class="text-skill-list">
+              <li><strong>FastAPI</strong></li>
+              <li><strong>Django & RESTful APIs</strong></li>
+              <li><strong>SQLAlchemy & ORM</strong></li>
+              <li><strong>Session & Role Auth</strong></li>
+            </ul>
+          </div>
+
+          <div class="telemetry-group">
+            <span class="group-label">LANGUAGES & TOOLS</span>
+            <ul class="text-skill-list">
+              <li><strong>Python & SQL</strong></li>
+              <li><strong>MySQL & PostgreSQL</strong></li>
+              <li><strong>Git & GitHub</strong></li>
+              <li><strong>Claude Code Tooling</strong></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- KEYFRAME 120: EXPERIENCE & PUBLICATIONS -->
+    <section class="keyframe-section pos-experience" id="sec-120" data-frame="120">
+      <div class="floating-text-block wide-top">
+        <span class="meta-tag red">KEYFRAME 120 // EXPERIENCE</span>
+        <h2 class="section-headline">EXPERIENCE & PUBLICATIONS</h2>
+
+        <div class="floating-timeline-row">
+          
+          <div class="timeline-col">
+            <span class="stint-label">INTERNSHIP • APR 2026 – MAY 2026</span>
+            <h3 class="company-heading">The Loft Labs</h3>
+            <span class="role-sub">AI Engineering Intern</span>
+            <p class="timeline-text">
+              Integrated LLM into drone mission planning; translated natural-language instructions into structured flight-plan waypoints.
+            </p>
+          </div>
+
+          <div class="timeline-col">
+            <span class="stint-label">INTERNSHIP • AUG 2025 – SEP 2025</span>
+            <h3 class="company-heading">Varsharthi Tech Solutions</h3>
+            <span class="role-sub">Backend Developer Intern</span>
+            <p class="timeline-text">
+              Developed Django backend models, views, and RESTful APIs. Optimized database queries and debugged core features.
+            </p>
+          </div>
+
+          <div class="timeline-col">
+            <span class="stint-label red">IEEE CONFERENCE PUBLICATION</span>
+            <h3 class="company-heading">Clegora Research Paper</h3>
+            <span class="role-sub">7th ICCCMLA Conference</span>
+            <p class="timeline-text">
+              Published research paper on Legal ChatBot for Indian Consumer & Civil Rights at the 7th ICCCMLA Conference.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- KEYFRAME 150: CONTACT -->
+    <section class="keyframe-section pos-contact" id="sec-150" data-frame="150">
+      <div class="floating-text-block">
+        <div class="meta-row end">
+          <span class="meta-tag red">KEYFRAME 150 // CONTACT</span>
+          <span class="meta-tag red">CHEQUERED FLAG</span>
+        </div>
+        <h2 class="section-headline">CONNECT</h2>
+
+        <div class="contact-links-grid">
+          <a href="mailto:rajageethan18@gmail.com" class="pure-link-item">
+            <span class="link-label">EMAIL DIRECT</span>
+            <span class="link-value">rajageethan18@gmail.com</span>
+          </a>
+
+          <a href="tel:+919566632717" class="pure-link-item">
+            <span class="link-label">PHONE</span>
+            <span class="link-value">+91 95666 32717</span>
+          </a>
+
+          <a href="https://linkedin.com/in/rajageethan/" target="_blank" rel="noopener" class="pure-link-item">
+            <span class="link-label">LINKEDIN</span>
+            <span class="link-value">linkedin.com/in/rajageethan/ -&gt;</span>
+          </a>
+
+          <div class="pure-link-item">
+            <span class="link-label">LOCATION</span>
+            <span class="link-value">Thanjavur, Tamil Nadu, India</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
