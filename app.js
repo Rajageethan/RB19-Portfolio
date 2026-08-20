@@ -16,10 +16,14 @@
   const KEYFRAMES = [0, 30, 60, 90, 120, 150];
 
   // Physics Parameters
-  const FRICTION = 0.88;               // Inertia velocity decay rate
-  const VELOCITY_SENSITIVITY = 0.0028; // Wheel input multiplier
-  const LERP_SPEED = 12.0;             // Time-based frame easing factor
-  const SNAP_SPRING_SPEED = 6.0;       // Magnetic spring pull speed
+  const FRICTION = 0.84;               // Inertia velocity decay (higher = snappier stop)
+  const VELOCITY_SENSITIVITY = 0.003;  // Wheel input multiplier
+  const LERP_SPEED = 14.0;             // Time-based frame easing factor
+  const SNAP_SPRING_SPEED = 12.0;      // Magnetic spring pull speed
+  const SNAP_VELOCITY_THRESHOLD = 0.5; // Snap engages below this velocity (was 0.15)
+  const SNAP_ZONE = 25;                // Frames radius around keyframe where snap acts
+  const SNAP_ZONE_DAMPING = 18;        // Inner zone where velocity is heavily damped
+
 
   // --- DOM Elements ---
   const canvas = document.getElementById('f1-canvas');
@@ -36,6 +40,7 @@
   let currentFrame = 0;
   let targetFrame = 0;
   let velocity = 0;
+  let lastRenderedIndex = 0; // Fallback: last frame that successfully drew
 
   let touchStartY = 0;
   let bgGradient = null;
@@ -147,9 +152,17 @@
   function renderCurrentFrame() {
     // Clamp current frame strictly within [0, 160]
     const index = Math.max(0, Math.min(160, Math.round(currentFrame)));
-    const img = images[index];
+    let img = images[index];
 
-    if (!img || !img.complete || img.naturalWidth === 0) return;
+    // If this frame isn't loaded yet, fall back to the last good frame
+    // — eliminates blank flashes during Wave 3 background loading
+    if (!img || !img.complete || img.naturalWidth === 0) {
+      img = images[lastRenderedIndex];
+      if (!img || !img.complete || img.naturalWidth === 0) return;
+    } else {
+      lastRenderedIndex = index;
+    }
+
 
     const vWidth = window.innerWidth;
     const vHeight = window.innerHeight;
@@ -213,30 +226,61 @@
   }
 
   function applyTrajectoryMagneticSnap(deltaSec) {
-    // Only engage magnetic snap when scrolling momentum has slowed down
-    if (Math.abs(velocity) < 0.15) {
-      // Calculate projected rest frame incorporating current momentum trajectory
-      const projectedRest = targetFrame + (velocity * (1 / (1 - FRICTION)));
+    // Find nearest keyframe to current targetFrame
+    let nearestKf = KEYFRAMES[0];
+    let minDist = 999;
+    KEYFRAMES.forEach((kf) => {
+      const d = Math.abs(kf - targetFrame);
+      if (d < minDist) { minDist = d; nearestKf = kf; }
+    });
 
-      let nearestKf = KEYFRAMES[0];
-      let minDiff = 999;
-
-      KEYFRAMES.forEach((kf) => {
-        const diff = kf - projectedRest;
-        if (Math.abs(diff) < Math.abs(minDiff)) {
-          minDiff = diff;
-          nearestKf = kf;
-        }
-      });
-
-      // Smoothly spring pull targetFrame towards the trajectory-projected keyframe
-      const pullDiff = nearestKf - targetFrame;
-      if (Math.abs(pullDiff) <= 22) {
-        const snapEase = 1 - Math.exp(-SNAP_SPRING_SPEED * deltaSec);
-        targetFrame += pullDiff * snapEase;
+    // --- Layer 1: Zone-based velocity damping ---
+    // As targetFrame enters a keyframe's gravity well, progressively kill velocity.
+    // This is what prevents "blowing past" a keyframe at high speed.
+    if (minDist < SNAP_ZONE) {
+      // t goes from 1 (at zone edge) to 0 (at keyframe center)
+      const t = minDist / SNAP_ZONE;
+      // Inner zone: very aggressive damping — feel like hitting a wall
+      if (minDist < SNAP_ZONE_DAMPING) {
+        const innerT = minDist / SNAP_ZONE_DAMPING;
+        // Extra per-frame damping: up to 40% extra friction at keyframe center
+        velocity *= (0.60 + 0.40 * innerT);
+      } else {
+        // Outer zone: gentle progressive slow-down
+        velocity *= (0.88 + 0.12 * t);
       }
     }
+
+    // --- Layer 2: Spring snap (trajectory-aware) ---
+    // Engage when velocity is low enough — now with a much higher threshold
+    if (Math.abs(velocity) < SNAP_VELOCITY_THRESHOLD) {
+      // Project where we'd coast to at current velocity
+      const projectedRest = targetFrame + (velocity * (1 / (1 - FRICTION)));
+
+      let snapTarget = KEYFRAMES[0];
+      let minSnapDiff = 999;
+      KEYFRAMES.forEach((kf) => {
+        const diff = Math.abs(kf - projectedRest);
+        if (diff < minSnapDiff) { minSnapDiff = diff; snapTarget = kf; }
+      });
+
+      const pullDiff = snapTarget - targetFrame;
+      if (Math.abs(pullDiff) <= SNAP_ZONE) {
+        const snapEase = 1 - Math.exp(-SNAP_SPRING_SPEED * deltaSec);
+        targetFrame += pullDiff * snapEase;
+        // Kill residual velocity so it doesn't fight the spring
+        velocity *= 0.85;
+      }
+    }
+
+    // --- Layer 3: Hard snap ---
+    // If we're within 0.5 frames and essentially stopped, lock to keyframe exactly.
+    if (minDist < 0.5 && Math.abs(velocity) < 0.05) {
+      targetFrame = nearestKf;
+      velocity = 0;
+    }
   }
+
 
   // --- 4. Time-Based Physics & Animation Loop ---
   function startRenderLoop() {
